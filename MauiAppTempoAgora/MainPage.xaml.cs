@@ -1,5 +1,6 @@
 ﻿using MauiAppTempoAgora.Models;
 using MauiAppTempoAgora.Services;
+using Microsoft.Maui.Networking;
 
 namespace MauiAppTempoAgora
 {
@@ -13,7 +14,17 @@ namespace MauiAppTempoAgora
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
-        { 
+        {
+
+
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                await DisplayAlert("Sem conexão",
+                    "Verifique sua conexão com a internet.",
+                    "OK");
+                return;
+            }
+
 
             try
             {
@@ -27,6 +38,9 @@ namespace MauiAppTempoAgora
 
                         dados_previsao = $"Latitude: {t.lat} \n" +
                                          $"Longitude: {t.lon} \n" +
+                                         $"Descrição: {t.description} \n" +
+                                         $"Velocidade do vento: {t.speed} m/s \n" +
+                                         $"Visibilidade: {t.visibility} m \n" +
                                          $"Nascer do Sol: {t.sunrise} \n" +
                                          $"Por do Sol: {t.sunset} \n" +
                                          $"Temp Máx: {t.temp_max} \n" +
